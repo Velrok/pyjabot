@@ -5,7 +5,7 @@ import json
 
 def get_config_path():
   home = os.path.abspath(os.environ["HOME"])
-  return os.path.join(home, ".pyjabot-config.json")
+  return os.path.join(home, ".config/pyjabot.json")
 
 def get_config():
   return json.load(open(get_config_path()))
