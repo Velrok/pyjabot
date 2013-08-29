@@ -17,6 +17,7 @@ class TvButtler(JabberBot):
 
   @botcmd
   def debug (self, message, args):
+    """Print back the message and args values received by a method."""
     return "message \t{}\nargs \t{}".format(message, args)
 
 def start_bot():
