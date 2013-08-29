@@ -30,7 +30,7 @@ def start_bot():
   connection_string = "{}@{}".format(user, host)
 
   print "starting bot {}".format(connection_string)
-  return TvButtler(connection_string, password, debug=True)
+  return TvButtler(connection_string, password)
 
 if __name__ == "__main__":
   bot = start_bot()
