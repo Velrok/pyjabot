@@ -11,3 +11,10 @@ pip install -e pyjabot
 
 `cp example-conf.json ~/.config/pyjabot.json`
 then adjust `~/.config/pyjabot.json` 
+
+## run tests
+
+We use nose and pinoccio for testing.
+Run the tests by excuting:
+
+`./run_tests.sh`
