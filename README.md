@@ -12,4 +12,3 @@ Note: "pip install -e" expects folder containing **setup.py** e.g. github/pyjabo
 
 `cp example-conf.json ~/.config/pyjabot.json`
 then adjust `~/.config/pyjabot.json` 
->>>>>>> master
