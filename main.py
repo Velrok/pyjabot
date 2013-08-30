@@ -26,11 +26,17 @@ class TvButtler(JabberBot):
     Usage:
       list tv
       list movies
-    Options:
-      -h  --help Show this screen.
+    Help:
+      help list -> Shows this screen
     """
-    #return os.listdir()
-    pass
+    config = get_config()
+    shows_dir = config["shows_dir"]
+    shows = ""
+
+    for show in os.listdir(shows_dir):
+      shows += show + "\n"
+    return shows
+    
 
 
 
