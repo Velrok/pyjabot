@@ -32,10 +32,21 @@ class TvButtler(JabberBot):
     config = get_config()
     shows_dir = config["shows_dir"]
     shows = ""
+    movies_dir = config["movies_dir"]
+    movies = ""
 
-    for show in os.listdir(shows_dir):
-      shows += show + "\n"
-    return shows
+    if args.lower() == "tv":
+      for show in os.listdir(shows_dir):
+        shows += show + "\n"
+      return shows
+    
+    elif args.lower() == "movies":
+      for movie in os.listdir(movies_dir):
+        movies += movie + "\n"
+      return movies
+
+    else:
+      return "Sorry, command not avabile. Type help list for a list of commands."
     
 
 
