@@ -20,6 +20,38 @@ class TvButtler(JabberBot):
     """Print back the message and args values received by a method."""
     return "message \t{}\nargs \t{}".format(message, args)
 
+  @botcmd
+  def list (self, message, args):
+    """
+    Returns a list of all TV shows or movies
+    Usage:
+      list tv
+      list movies
+    Help:
+      help list -> Shows this screen
+    """
+    config = get_config()
+    shows_dir = config["shows_dir"]
+    shows = ""
+    movies_dir = config["movies_dir"]
+    movies = ""
+
+    if args.lower() == "tv":
+      for show in os.listdir(shows_dir):
+        shows += show + "\n"
+      return shows
+    
+    elif args.lower() == "movies":
+      for movie in os.listdir(movies_dir):
+        movies += movie + "\n"
+      return movies
+
+    else:
+      return "Sorry, command not avabile. Type help list for a list of commands."
+    
+
+
+
 def start_bot():
   """Returns a new bot instance using the configured parameters."""
   config = get_config()
