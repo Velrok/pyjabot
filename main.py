@@ -19,6 +19,21 @@ class TvButtler(JabberBot):
   def debug (self, message, args):
     return "message \t{}\nargs \t{}".format(message, args)
 
+  @botcmd
+  def list (self, message, args):
+    """
+    Returns a list of all TV shows or movies
+    Usage:
+      list tv
+      list movies
+    Options:
+      -h  --help Show this screen.
+    """
+    #return os.listdir()
+    pass
+
+
+
 def start_bot():
   """Returns a new bot instance using the configured parameters."""
   config = get_config()
