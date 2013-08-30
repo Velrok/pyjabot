@@ -5,7 +5,7 @@
 git clone git@github.com:Velrok/pyjabot.git
 pip install -e pyjabot
 ```
-*Note: "pip install -e" expects folder containing **setup.py** e.g. github/pyjabot*
+Note: "pip install -e" expects folder containing **setup.py** e.g. github/pyjabot
 
 ## configure 
 
