@@ -24,11 +24,9 @@ Run the tests by excuting:
 ### autotesting
 
 If you prefer that tests a run every time you change a file use 
-[pyautotest](https://github.com/ascarter/pyautotest).
-After the install you can start it calling `autotest` in the project root.
+[sniffer](https://pypi.python.org/pypi/sniffer).
+After the install you can start it calling `sniffer` in the project root.
 
-Also when you are using mac and want to get notifications you should install 
-[terminal-notifier](https://github.com/alloy/terminal-notifier).
 
 If you are using vim and the test are not run on save have a look 
 [here](https://github.com/gorakhargosh/watchdog/issues/56?source=c).
