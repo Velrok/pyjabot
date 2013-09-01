@@ -1,6 +1,8 @@
 {
   "username": "king",
   "password": "yourpassword",
-  "host": "jabber.org"
+  "host": "jabber.org",
+  "shows_dir": "/home/user/shows",
+  "movies_dir": "/home/user/movies"
 }
 
