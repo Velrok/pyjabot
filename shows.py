@@ -2,7 +2,6 @@ import os
 import re
 
 def extract_meta_data(filepath):
-  pattern = re.compile("(?P<show_title>\w*) - (?P<season_episode>\w*)( - (?P<ep_title>\w*))?( - (?P<quality>\w*))?\.\w+")
   pattern_parts = [
       "(?P<showname>[\w\(\) ]*)",
       " - S?(?P<s_nr>\d*)[xeE]?(?P<ep_nr>\d*)",
@@ -10,12 +9,12 @@ def extract_meta_data(filepath):
       "( - ([^-]*))?",
       "(.*)",
       "\.(?P<ext>\w+)"]
-  pattern = re.compile("".join(pattern_parts))
+  pattern  = re.compile("".join(pattern_parts))
   filename = os.path.basename(filepath)
 
   match = pattern.search(filename)
   if match:
-    season_nr = None
+    season_nr  = None
     episode_nr = None
     try:
       season_nr = int(match.group("s_nr"))
@@ -25,11 +24,10 @@ def extract_meta_data(filepath):
       episode_nr = int(match.group("ep_nr"))
     except ValueError:
       pass
-    return {
-        "ext": match.group("ext"),
-        "season#": season_nr,
-        "episode#": episode_nr,
-        "showname": match.group("showname")}
+    return { "ext"      : match.group("ext"),
+             "season#"  : season_nr,
+             "episode#" : episode_nr,
+             "showname" : match.group("showname") }
   else:
     return None
 
@@ -43,10 +41,11 @@ def list(shows_path):
   for path, dirs, files in leaf_tripple:
     for f in files:
       filepath = os.path.join(path, f)
-      print filepath
-      meta = extract_meta_data(filepath)
-      result = {"filepath": filepath}
+      meta     = extract_meta_data(filepath)
+      result   = {"filepath": filepath}
+
       if meta:
         result.update(meta)
       meta_data.append(result)
+
   return meta_data
