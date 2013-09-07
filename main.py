@@ -68,14 +68,14 @@ class TvButtler(JabberBot):
       return self.find.__doc__
 
     pattern   = argments['<pattern>']
-    season    = argments['<season_number>']
-    episode   = argments['<episode_number>']
+    season    = int(argments['<season_number>'])
+    episode   = int(argments['<episode_number>'])
 
     conf      = get_config()
     shows_dir = conf["shows_dir"]
     episodes  = shows.list(shows_dir)
 
-    found_episodes = maiks_filter(episodes, pattern, season, episode)
+    found_episodes = shows.find(episodes, pattern, season, episode)
     nice_string = make_nice_string(found_episodes)
     return nice_string
 
