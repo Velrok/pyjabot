@@ -25,11 +25,19 @@ def waldemars_fn(path):
   ]
 
 def maiks_filter(episodes, pattern, season=None, episode=None):
-  filtered_episode_list = []
   pattern_as_regex = re.compile(pattern)
-  def f(x):
+
+  def matching_showname(x):
     return pattern_as_regex.match(x["showname"])
-  return filter(f, episodes) 
+
+  result = filter(matching_showname, episodes)
+  if episode:
+    result = filter(lambda d: d["episode#"] == int(episode), result)
+
+  if season:
+    result = filter(lambda d: d["season#"] == int(season), result)
+
+  return result
 
 
 
@@ -70,7 +78,7 @@ class TvButtler(JabberBot):
       for show in os.listdir(shows_dir):
         shows += show + "\n"
       return shows
-    
+
     elif args.lower() == "movies":
       for movie in os.listdir(movies_dir):
         movies += movie + "\n"
@@ -101,7 +109,7 @@ class TvButtler(JabberBot):
     shows_dir = conf["shows_dir"]
     episodes  = waldemars_fn(shows_dir)
 
-    found_episodes = maiks_filter(episodes, pattern, season, episode) 
+    found_episodes = maiks_filter(episodes, pattern, season, episode)
     nice_string = make_nice_string(found_episodes)
     return nice_string
 
