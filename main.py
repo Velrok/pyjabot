@@ -5,6 +5,7 @@ import os
 import json
 import re
 import shows
+import sys
 
 
 def get_config_path():
@@ -90,6 +91,14 @@ def start_bot():
   password = config["password"]
   host = config["host"]
   connection_string = "{}@{}".format(user, host)
+
+  if not os.path.exists(config['shows_dir']):
+    print "[ERROR] Can't read shows_dir: ", config['shows_dir']
+    sys.exit(1)
+
+  if not os.path.exists(config['movies_dir']):
+    print "[ERROR] Can't read movies_dir: ", config['movies_dir']
+    sys.exit(2)
 
   print "starting bot {}".format(connection_string)
   return TvButtler(connection_string, password)
