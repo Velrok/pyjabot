@@ -49,3 +49,19 @@ def list(shows_path):
       meta_data.append(result)
 
   return meta_data
+
+def find(episodes, pattern, season=None, episode=None):
+  pattern_as_regex = re.compile(pattern)
+
+  def matching_showname(x):
+    return pattern_as_regex.match(x["showname"])
+
+  result = filter(matching_showname, episodes)
+  if episode:
+    result = filter(lambda d: d["episode#"] == int(episode), result)
+
+  if season:
+    result = filter(lambda d: d["season#"] == int(season), result)
+
+  return result
+
