@@ -30,13 +30,6 @@ all_episodes = [
   ]
 
 
-def test_true():
-  assert True
-
-@nottest
-def test_fail():
-  assert False
-
 def test_maiks_filter_returns_2_True_Blood_Entrys():
   result = maiks_filter(all_episodes, "True Blood")
   expectation = [{'filepath': "True Blood/Season 06/True Blood 6x10.mkv",
