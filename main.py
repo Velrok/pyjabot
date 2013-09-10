@@ -1,5 +1,6 @@
 from jabberbot import JabberBot, botcmd
 from docopt import docopt, DocoptExit
+import logging
 import datetime
 import os
 import json
@@ -7,6 +8,7 @@ import re
 import shows
 import sys
 
+logging.basicConfig() # getLogger("jabberbot").
 
 def get_config_path():
   home = os.path.abspath(os.environ["HOME"])
@@ -14,6 +16,13 @@ def get_config_path():
 
 def get_config():
   return json.load(open(get_config_path()))
+
+# 
+def make_nice_string(episodes):
+  return "Found %d episodes: %s" % (
+      len(episodes),
+      "\n".join(["%s S%02dE%02d" % (e["showname"], e["season#"], e["episode#"]) for e in episodes])
+  )
 
 class TvButtler(JabberBot):
   @botcmd
@@ -52,31 +61,36 @@ class TvButtler(JabberBot):
       return movies
 
     else:
-      return "Sorry, command not avabile. Type help list for a list of commands."
+      return "Sorry, command not available. Type help list for a list of commands."
 
   @botcmd
   def find(self, message, args):
     """
-    Find episondes based on regex.
+    Find episodes based on regex.
 
     usage:
-      find <pattern> <season_number> <episode_number>
+      find <pattern> [<season_number> [<episode_number>]]
 
     """
+    season = episode = None
+
     try:
-      argments  = docopt(self.find.__doc__, args.split(" "))
+      arguments  = docopt(self.find.__doc__, args.split(" "))
     except DocoptExit:
       return self.find.__doc__
+    print arguments
 
-    pattern   = argments['<pattern>']
-    season    = int(argments['<season_number>'])
-    episode   = int(argments['<episode_number>'])
+    pattern   = arguments['<pattern>']
+    if arguments['<season_number>'] != None:
+        season    = int(arguments['<season_number>'])
+    if arguments['<episode_number>'] != None:
+        episode   = int(arguments['<episode_number>'])
 
     conf      = get_config()
     shows_dir = conf["shows_dir"]
     episodes  = shows.list(shows_dir)
 
-    found_episodes = shows.find(episodes, pattern, season, episode)
+    found_episodes = shows.find(episodes, pattern, season=season, episode=episode)
     nice_string = make_nice_string(found_episodes)
     return nice_string
 
