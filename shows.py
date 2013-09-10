@@ -1,18 +1,19 @@
 import os
 import re
 
-def extract_meta_data(filepath):
-  pattern_parts = [
+pattern_parts = [
       "(?P<showname>[\w\(\) ]*)",
       " - S?(?P<s_nr>\d*)[xeE]?(?P<ep_nr>\d*)",
       "( - ([^-]*))?",
       "( - ([^-]*))?",
       "(.*)",
       "\.(?P<ext>\w+)"]
-  pattern  = re.compile("".join(pattern_parts))
+METADATA_PATTERN  = re.compile("".join(pattern_parts), re.IGNORECASE)
+
+def extract_meta_data(filepath):
   filename = os.path.basename(filepath)
 
-  match = pattern.search(filename)
+  match = METADATA_PATTERN.search(filename)
   if match:
     season_nr  = None
     episode_nr = None
@@ -51,10 +52,10 @@ def list(shows_path):
   return meta_data
 
 def find(episodes, pattern, season=None, episode=None):
-  pattern_as_regex = re.compile(pattern)
+  pattern_as_regex = re.compile(pattern, re.IGNORECASE)
 
   def matching_showname(x):
-    return pattern_as_regex.match(x["showname"])
+    return "showname" in x and pattern_as_regex.match(x["showname"])
 
   result = filter(matching_showname, episodes)
   if episode:
