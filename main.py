@@ -78,7 +78,6 @@ class TvButtler(JabberBot):
       arguments  = docopt(self.find.__doc__, args.split(" "))
     except DocoptExit:
       return self.find.__doc__
-    print arguments
 
     pattern   = arguments['<pattern>']
     if arguments['<season_number>'] != None:
