@@ -1,7 +1,3 @@
-from nose.tools import nottest
-def test_true():
-  assert True
+from main import *
+from nose.tools import nottest, eq_
 
-@nottest
-def test_fail():
-  assert False
