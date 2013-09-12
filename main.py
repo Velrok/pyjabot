@@ -119,6 +119,7 @@ def main(args):
     python main.py [options]
 
   Options:
+    -h --help             Shows this help.
     --config <config>     The config file to use. [default: ~/.config/pyjabot.json]
   """
   arguments  = docopt(main.__doc__, args)
