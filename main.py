@@ -10,12 +10,9 @@ import sys
 
 logging.basicConfig() # getLogger("jabberbot").
 
-def get_config_path():
-  home = os.path.abspath(os.environ["HOME"])
-  return os.path.join(home, ".config/pyjabot.json")
-
-def get_config():
-  return json.load(open(get_config_path()))
+def get_config(config_file=None):
+  config_file = os.path.expanduser(config_file)
+  return json.load(open(config_file))
 
 # 
 def make_nice_string(episodes):
@@ -95,11 +92,8 @@ class TvButtler(JabberBot):
 
 
 
-def start_bot():
+def start_bot(config):
   """Returns a new bot instance using the configured parameters."""
-  config = get_config()
-  print "config loaded from {}: {}".format(get_config_path(), config)
-
   user = config["username"]
   password = config["password"]
   host = config["host"]
@@ -116,9 +110,27 @@ def start_bot():
   print "starting bot {}".format(connection_string)
   return TvButtler(connection_string, password)
 
-if __name__ == "__main__":
-  bot = start_bot()
+
+def main(args):
+  """
+  Runs a bot for exporting your TV shows / Movies via BitTorrent Sync.
+
+  Usage:
+    python main.py [options]
+
+  Options:
+    -h --help             Shows this help.
+    -c --config <config>  The config file to use. [default: ~/.config/pyjabot.json]
+  """
+  arguments  = docopt(main.__doc__, args)
+
+  config_file = arguments['--config']
+  config = get_config(config_file)
+  logging.info("Loading configfile from {}: {}".format(config_file, config))
+
+  bot = start_bot(config)
   bot.serve_forever()
 
-
+if __name__ == "__main__":
+  main(sys.argv)
 
