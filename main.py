@@ -10,13 +10,8 @@ import sys
 
 logging.basicConfig() # getLogger("jabberbot").
 
-def get_user_config_path():
-  home = os.path.abspath(os.environ["HOME"])
-  return os.path.join(home, ".config/pyjabot.json")
-
 def get_config(config_file=None):
-  if config_file is None:
-    config_file = get_user_config_path()
+  config_file = os.path.expanduser(config_file)
   return json.load(open(config_file))
 
 # 
@@ -121,15 +116,14 @@ def main(args):
   Runs a bot for exporting your TV shows / Movies via BitTorrent Sync.
 
   Usage:
-    python main.py [--config <config>]
+    python main.py [options]
+
+  Options:
+    --config <config>     The config file to use. [default: ~/.config/pyjabot.json]
   """
   arguments  = docopt(main.__doc__, args)
 
-  if arguments['--config'] and arguments['<config>'] is not None:
-    config_file = arguments['<config>']
-  else:
-    config_file = get_user_config_path()
-
+  config_file = arguments['--config']
   config = get_config(config_file)
   logging.info("Loading configfile from {}: {}".format(config_file, config))
 
