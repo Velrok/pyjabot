@@ -19,9 +19,9 @@ def get_config():
 
 # 
 def make_nice_string(episodes):
-  return "Found %d episodes: %s" % (
-      len(episodes),
-      "\n".join(["%s S%02dE%02d" % (e["showname"], e["season#"], e["episode#"]) for e in episodes])
+  return "Found {episodes_len} episodes:\n{}".format(
+      "\n".join(["{0} S{1:02}E{2:02}d".format(e["showname"], e["season#"], e["episode#"]) for e in episodes]),
+      episodes_len=len(episodes)
   )
 
 class TvButtler(JabberBot):
