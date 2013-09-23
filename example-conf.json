@@ -3,6 +3,7 @@
   "password": "yourpassword",
   "host": "jabber.org",
   "shows_dir": "/home/user/shows",
-  "movies_dir": "/home/user/movies"
+  "movies_dir": "/home/user/movies",
+  "share_dir": "/media"
 }
 

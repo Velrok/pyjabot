@@ -1,5 +1,7 @@
 from jabberbot import JabberBot, botcmd
 from docopt import docopt, DocoptExit
+
+from share_episode import run as share_episode
 import logging
 import datetime
 import os
@@ -22,6 +24,17 @@ def make_nice_string(episodes):
   )
 
 class TvButtler(JabberBot):
+  def __init__(self, config):
+    self.config = config
+
+    user = config["username"]
+    password = config["password"]
+    host = config["host"]
+    connection_string = "{}@{}".format(user, host)
+    logging.info("starting bot {}".format(connection_string))
+
+    super(TvButtler, self).__init__(connection_string, password)
+
   @botcmd
   def hello(self, message, args):
     return "Hello!"
@@ -35,16 +48,17 @@ class TvButtler(JabberBot):
   def list (self, message, args):
     """
     Returns a list of all TV shows or movies
+
     Usage:
       list tv
       list movies
+
     Help:
       help list -> Shows this screen
     """
-    config = get_config()
-    shows_dir = config["shows_dir"]
+    shows_dir = self.config["shows_dir"]
     shows = ""
-    movies_dir = config["movies_dir"]
+    movies_dir = self.config["movies_dir"]
     movies = ""
 
     if args.lower() == "tv":
@@ -82,22 +96,47 @@ class TvButtler(JabberBot):
     if arguments['<episode_number>'] != None:
         episode   = int(arguments['<episode_number>'])
 
-    conf      = get_config()
-    shows_dir = conf["shows_dir"]
+    shows_dir = self.config["shows_dir"]
     episodes  = shows.list(shows_dir)
 
     found_episodes = shows.find(episodes, pattern, season=season, episode=episode)
     nice_string = make_nice_string(found_episodes)
     return nice_string
 
+  @botcmd
+  def share(self, message, args):
+    """
+    Links/Copies the specified episode to the share folder.
 
+    Usage:
+      share tv <pattern> <season> <episode>
+    """
+    try:
+      arguments  = docopt(self.share.__doc__, args.split(" "))
+    except DocoptExit:
+      return self.share.__doc__
+
+    shows_dir = self.config["shows_dir"]
+    share_dir = self.config["share_dir"]
+    episodes  = shows.list(shows_dir)
+
+    found_episodes = shows.find(episodes, arguments['<pattern>'],
+                                season=arguments['<season>'],
+                                episode=arguments['<episode>'])
+
+    if len(found_episodes) == 0:
+      return "No episode matched your criteria. Please try again or use 'find' to search first."
+    elif len(found_episodes) > 1:
+      return "Your showname must match only one episode. Please be more specific with the pattern."
+    else:
+      try:
+        share_episode(found_episodes[0]['filepath'], share_dir)
+      except IOError as ioe:
+        return "Failed to share file: {}".format(ioe)
+      return "File shared: {}".format(found_episodes[0]['filename'])
 
 def start_bot(config):
   """Returns a new bot instance using the configured parameters."""
-  user = config["username"]
-  password = config["password"]
-  host = config["host"]
-  connection_string = "{}@{}".format(user, host)
 
   if not os.path.exists(config['shows_dir']):
     print "[ERROR] Can't read shows_dir: ", config['shows_dir']
@@ -107,8 +146,7 @@ def start_bot(config):
     print "[ERROR] Can't read movies_dir: ", config['movies_dir']
     sys.exit(2)
 
-  print "starting bot {}".format(connection_string)
-  return TvButtler(connection_string, password)
+  return TvButtler(config)
 
 
 def main(args):

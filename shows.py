@@ -43,7 +43,10 @@ def list(shows_path):
     for f in files:
       filepath = os.path.join(path, f)
       meta     = extract_meta_data(filepath)
-      result   = {"filepath": filepath}
+      result   = {
+        "filename": f,
+        "filepath": filepath
+      }
 
       if meta:
         result.update(meta)
