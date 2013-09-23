@@ -4,8 +4,8 @@ import shutil
 
 def run(filename, share_folder):
   """
-  Links the given file to the BitTorrent Sync share folder.
-  If the shared_folder and the source file is not on the same device, the file is copied.
+  Links the given file to the share folder.
+  If the `share_folder` and the source file is not on the same device, the file is copied.
   """
   basename = os.path.basename(filename)
   new_file = os.path.join(share_folder, basename)
@@ -27,5 +27,3 @@ def run_same_device(filename, share_folder):
   basename = os.path.basename(filename)
   new_file = os.path.join(share_folder, basename)
   os.link(filename, new_file)
-
-# run("/etc/hosts", "/Volumes/Data")
