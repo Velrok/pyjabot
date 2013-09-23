@@ -72,7 +72,7 @@ class TvButtler(JabberBot):
       return movies
 
     else:
-      return "Sorry, command not available. Type help list for a list of commands."
+      return "Please use 'list tv' or 'list movies' to list the available shows/movies."
 
   @botcmd
   def find(self, message, args):
